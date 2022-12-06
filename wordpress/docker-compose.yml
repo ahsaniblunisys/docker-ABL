@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   db:
+    container_name: mariadb_10_6_4
     # We use a mariadb image which supports both amd64 & arm64 architecture
     image: mariadb:10.6.4-focal
     # If you really want to use MySQL, uncomment the following line
@@ -8,26 +9,22 @@ services:
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
       - db_data:/var/lib/mysql
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=somewordpress
       - MYSQL_DATABASE=wordpress
       - MYSQL_USER=wordpress
-      - MYSQL_PASSWORD=wordpress
-    expose:
-      - 3306
-      - 33060
+      - MYSQL_PASSWORD=wordpress$786
     networks:
       - wordpress  
   wordpress:
+    container_name: wordpress_cms
     image: wordpress:latest
     ports:
-      - 3002:3002
-    restart: always
+      - 8080:80
     environment:
       - WORDPRESS_DB_HOST=db
       - WORDPRESS_DB_USER=wordpress
-      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress$786
       - WORDPRESS_DB_NAME=wordpress
     networks:
       - wordpress
@@ -35,6 +32,3 @@ volumes:
   db_data:
 networks:
   wordpress:
-
-  
-    
